@@ -1,0 +1,41 @@
+^w::
+;----------------------------------------------------------------- activate windows
+
+
+terpene_array := ["b-Pinene", "b-Myrcene", "a-Phellandrene", "d-3-Carene", "a-Terpinene", "Limonene", "p-Cymene", "Eucalyptol", "b-Ocimene", "g-Terpinene", "Terpinolene", "Fenchol", "Sabinene Hydrate", "Linalool", "Fenchone", "Isopulegol", "Camphor", "Isoborneol", "DL-Menthol", "Borneol", "Terpineol", "Nerol", "Pulegone", "Geraniol", "Geranyl Acetate", "a-Cedrene", "b-Caryophyllene", "a-Humulene", "Valencene", "cis-Nerolidol", "trans-Nerolidol", "Guaiol", "Caryophyllene Oxide", "Cedrol", "a-Bisabolol"] ;....terpene compounds list
+i := 1
+
+;===================================================================
+
+Loop, read, C:\Users\Lab\Desktop\Macros\terpene-example.txt, C:\Users\Lab\Desktop\Macros\output.csv
+{
+	if InStr(A_LoopReadLine, terpene_array[i])
+	{
+		terp_value = %A_LoopReadLine%
+		var1 := terpene_array[i]
+		;MsgBox, %var1%
+		Length1 := RegExMatch(terp_value, var1)
+		
+		;MsgBox, % Length1
+
+		terp_value_trim1 := SubStr(terp_value, 1, (Length1-1))
+		;MsgBox, % terp_value_trim1
+
+		terp_value_trim2 := LTrim(terp_value_trim1, OmitChars := "line.`t")
+		terp_value_trim3 := StrReplace(terp_value_trim2, A_Space, ", ")
+		;MsgBox, % terp_value_trim3
+
+        	FileAppend, %terp_value_trim3%`, %var1%`n ,  C:\Users\Lab\Desktop\Macros\output.csv
+		
+		i += 1
+	}
+}
+FileAppend, -------END-------`n,  C:\Users\gabri\Desktop\macros\output.csv
+
+;...............keep
+Reload
+Sleep 1000 ; If successful, the reload will close this instance during the Sleep, so the line below will never be reached.
+MsgBox, 4,, The script could not be reloaded. Would you like to open it for editing?
+IfMsgBox, Yes, Edit
+return
+;---------------keep
